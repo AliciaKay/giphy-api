@@ -1,0 +1,71 @@
+setting the api to call from the server ensures better security.
+
+npm install request --save
+
+it's a development dependency
+
+in the server file:
+
+
+var express = require('/express')
+var app = express();
+
+var request = require('/request');
+
+app.get('/github', function(req, res) {
+    console.log('in the github route');
+    request('https://api.github.come/users/aliciakay', function(error, response, body) {
+        console.log('error:', error);
+        console.log('statusCode:', response && response.statusCode);
+        console.log('body:', body);
+        res.status(200).send(JSON.parse(body));
+    });
+});
+
+ to test in postman:
+
+ got to the server port/the api address
+
+ to get a token/API key from github:
+
+ got to settings, personal access tokens, generate new:
+
+ name the token, select options (like read only, check user), generate the token.
+
+ copy the token - a random string
+
+in the server file again, before the request(options...):
+
+var options = {
+    url: [the url of the api];
+    method: 'GET',
+    headers: {
+        'Authorization': 'Token [tokenstring]',
+        'User-Agent': 'request dotenv lecture bob', //if the header has a dash in it it must be quoted
+    }
+};
+
+this returns a bunch of profile information
+modify the urls to get different information, ex. [api url]/users
+
+next: npm install dotenv --save
+
+reate a file locally called .env
+
+in the env file:
+GITHUB_API_KEY: [the token string];
+
+add the .env to the gitignore file.
+
+require the dotenv file in the server or any file that needs an environment variable.
+
+require('dotenv').config();
+
+to add the custom env option, go to the server file in...
+
+var options=
+...
+headers: {
+    Authorization: 'Token ' + process.env.GITHUB_API_KEY,
+    'User-Agent': ....
+}
